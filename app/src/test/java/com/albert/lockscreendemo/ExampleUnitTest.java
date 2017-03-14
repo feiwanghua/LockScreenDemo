@@ -1,4 +1,4 @@
-package com.albert.lockscreemdemo;
+package com.albert.lockscreendemo;
 
 import org.junit.Test;
 

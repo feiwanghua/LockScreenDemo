@@ -1,4 +1,4 @@
-package com.albert.lockscreemdemo;
+package com.albert.lockscreendemo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

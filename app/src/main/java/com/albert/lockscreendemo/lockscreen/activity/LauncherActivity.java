@@ -1,51 +1,44 @@
-package com.albert.lockscreemdemo.lockscreen;
+package com.albert.lockscreendemo.lockscreen.activity;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.Menu;
+import android.util.Log;
 import android.view.WindowManager;
+import com.albert.lockscreendemo.lockscreen.receiver.LockScreenReceiver;
 
-import com.albert.lockscreemdemo.R;
 import java.util.List;
-
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
 
 /**
  * Created by feiwh on 2017/3/9.
  */
 
-public class LauncherHomeActivity extends Activity {
+public class LauncherActivity extends Activity {
     private String mPackageName;
     private String mClassName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("albert","LauncherActivity onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        setContentView(R.layout.activity_launcher_home);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        startService(new Intent(LauncherHomeActivity.this, LockScreenService.class));
         getLauncherPackageName(this);
-        if (!LockScreenReceiver.isLocked) {
-            if (isEffective(mPackageName) && isEffective(mClassName)) {
-                Intent systemIntent = new Intent();
-                systemIntent.setComponent(new ComponentName(mPackageName, mClassName));
-                startActivity(systemIntent);
-                moveTaskToBack(false);
-            }
+        if (!LockScreenReceiver.isLocked&&isEffective(mPackageName) && isEffective(mClassName)) {
+            Intent systemIntent = new Intent();
+            systemIntent.setComponent(new ComponentName(mPackageName, mClassName));
+            startActivity(systemIntent);
+        }else{
+            Intent lockIntent = new Intent(getApplicationContext(),LockScreenActivity.class);
+            lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(lockIntent);
         }
+        finish();
     }
 
     private void getLauncherPackageName(Context context) {
@@ -75,7 +68,14 @@ public class LauncherHomeActivity extends Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return true;
+    protected void onResume() {
+        Log.v("albert","LauncherActivity onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.v("albert","LauncherActivity onPause");
+        super.onPause();
     }
 }

@@ -66,4 +66,17 @@ public class LockViewHelper {
     public static void setStatus(int status){
         mStatus = status;
     }
+
+    public static void hideWindow(Context context){
+        switch (mStatus){
+            case LOCK:
+                LockScreenView.getInstance(context).hideWindow();
+                break;
+            case CHARGING_LOCK:
+                ChargingView.getInstance(context).hideWindow();
+                break;
+            case UNLOCK:
+                break;
+        }
+    }
 }

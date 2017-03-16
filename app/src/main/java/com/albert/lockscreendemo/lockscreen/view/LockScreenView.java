@@ -46,6 +46,7 @@ class LockScreenView {
     public void hideWindow() {
         if (mRootView.getParent() != null) {
             mWindowManager.removeView(mRootView);
+            LockViewHelper.setStatus(LockViewHelper.UNLOCK);
         }
     }
 

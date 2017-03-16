@@ -3,14 +3,19 @@ package com.albert.lockscreendemo.lockscreen.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.albert.lockscreendemo.lockscreen.receiver.LockScreenReceiver;
+import com.albert.lockscreendemo.lockscreen.utils.Util;
+import com.albert.lockscreendemo.lockscreen.view.LockViewHelper;
 
 /**
  * Created by feiwh on 2017/3/9.
@@ -19,6 +24,8 @@ import com.albert.lockscreendemo.lockscreen.receiver.LockScreenReceiver;
 public class LockScreenService extends Service {
 
     private final static int GRAY_SERVICE_ID = 1001;
+    // A public action send by AlarmService when the alarm has started.
+    public static final String ALARM_ALERT_ACTION = "com.android.deskclock.ALARM_ALERT";
 
     @Nullable
     @Override
@@ -40,8 +47,10 @@ public class LockScreenService extends Service {
         filter.addAction(Intent.ACTION_TIME_TICK);
         filter.addAction(Intent.ACTION_TIME_CHANGED);
         filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+        filter.addAction(ALARM_ALERT_ACTION);
         BroadcastReceiver mReceiver = new LockScreenReceiver();
         registerReceiver(mReceiver, filter);
+        startPhoneStateService();
     }
 
     @Override
@@ -84,4 +93,25 @@ public class LockScreenService extends Service {
 
     }
 
+    private void startPhoneStateService() {
+        ((TelephonyManager) getApplicationContext().getSystemService(Service.TELEPHONY_SERVICE))
+                .listen(new PhoneStateListener() {
+                    @Override
+                    public void onCallStateChanged(int state, String incomingNumber) {
+                        super.onCallStateChanged(state, incomingNumber);
+                        switch (state) {
+                            case TelephonyManager.CALL_STATE_IDLE:
+                                Log.v("albert","CALL_STATE_IDLE");
+                                break;
+                            case TelephonyManager.CALL_STATE_OFFHOOK:
+                                Log.v("albert","CALL_STATE_OFFHOOK");
+                                break;
+                            case TelephonyManager.CALL_STATE_RINGING:
+                                Log.v("albert","CALL_STATE_RINGING");
+                                LockViewHelper.hideWindow(getApplicationContext());
+                                break;
+                        }
+                    }
+                }, PhoneStateListener.LISTEN_CALL_STATE);
+    }
 }

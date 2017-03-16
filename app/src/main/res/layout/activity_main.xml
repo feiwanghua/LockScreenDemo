@@ -8,21 +8,29 @@
     tools:context="com.albert.lockscreendemo.MainActivity">
 
     <Button
-        android:id="@+id/open_lock_screen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#999999"
-        android:layout_margin="10dp"
-        android:text="打开锁屏"
-        android:textSize="30dp" />
-
-    <Button
         android:id="@+id/request_permission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#999999"
         android:layout_margin="10dp"
         android:text="请求权限"
         android:textSize="30dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#e4e4e4"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="锁屏开关:"/>
+        <Switch
+            android:id="@+id/open_lock_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
+    </LinearLayout>
+
 
 </LinearLayout>

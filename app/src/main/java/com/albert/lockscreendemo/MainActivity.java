@@ -2,13 +2,12 @@ package com.albert.lockscreendemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.albert.lockscreendemo.lockscreen.service.LockScreenService;
@@ -29,20 +28,30 @@ public class MainActivity extends Activity {
         if (requestCode == REQUEST_CODE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Settings.canDrawOverlays(this)) {
-
+                    findViewById(R.id.open_lock_screen).setEnabled(true);
                 }
             }
         }
     }
 
     private void initView() {
-        findViewById(R.id.open_lock_screen).setOnClickListener(new View.OnClickListener() {
+        ((Switch) findViewById(R.id.open_lock_screen)).setChecked(Util.isLockScreenOn(getApplicationContext()));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M||Settings.canDrawOverlays(this)) {
+            findViewById(R.id.open_lock_screen).setEnabled(true);
+        }
+        ((Switch) findViewById(R.id.open_lock_screen)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                Util.disableKeyguard(getApplicationContext());
-                startService(new Intent(MainActivity.this, LockScreenService.class));
-                Toast.makeText(getApplicationContext(), "startService", Toast.LENGTH_SHORT);
-                finish();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    Util.disableKeyguard(getApplicationContext());
+                    startService(new Intent(MainActivity.this, LockScreenService.class));
+                    Toast.makeText(getApplicationContext(), "startService", Toast.LENGTH_SHORT);
+                    Util.setLockScreenStatus(getApplicationContext(),true);
+                }else{
+                    stopService(new Intent(MainActivity.this, LockScreenService.class));
+                    Toast.makeText(getApplicationContext(), "stopService", Toast.LENGTH_SHORT);
+                    Util.setLockScreenStatus(getApplicationContext(),false);
+                }
             }
         });
 

@@ -16,9 +16,9 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("albert", "BootReceiver:"+intent.getAction());
-//        if (intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)) {
-//            Log.v("albert","ACTION_LOCKED_BOOT_COMPLETED");
-//        }
+        if (intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)) {
+            Log.v("albert","ACTION_LOCKED_BOOT_COMPLETED");
+        }
         if (!Util.isServiceWork(context, LockScreenService.class.getName())) {
             context.startService(new Intent(context, LockScreenService.class));
         }

@@ -8,11 +8,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+
+import com.albert.lockscreendemo.lockscreen.activity.DisableKeyguardActivity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +29,8 @@ import java.util.List;
 
 public class Util {
 
-    private static final String SP_NAME_LOCKSCREEN = "nameLcckScreen";
-    private static final String SP_KEY_LOCKSCREEN = "keyLcckScreen";
+    private static final String SP_NAME_LOCKSCREEN = "nameLockScreen";
+    private static final String SP_KEY_LOCKSCREEN = "keyLockScreen";
 
     /**
      * 判断是否有锁
@@ -48,16 +56,27 @@ public class Util {
     /**
      * 引导解锁
      */
+//    public static void disableKeyguard(Context context) {
+//        if (isSecure(context)) {
+//            //只能禁用滑动锁
+//            KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+//            KeyguardManager.KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("");
+//            keyguardLock.disableKeyguard();
+//            //密码锁或者图案锁可以引导用户去手动关闭
+//            /*Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+//            startActivity(intent);*/
+//        }
+//    }
+//
+//    public static void reenableKeyguard(Context context) {
+//        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+//        KeyguardManager.KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("");
+//        keyguardLock.reenableKeyguard();
+//    }
     public static void disableKeyguard(Context context) {
-        if (isSecure(context)) {
-            //只能禁用滑动锁
-            KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-            KeyguardManager.KeyguardLock keyguardLock = keyguardManager.newKeyguardLock("");
-            keyguardLock.disableKeyguard();
-            //密码锁或者图案锁可以引导用户去手动关闭
-            /*Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
-            startActivity(intent);*/
-        }
+        Intent intent = new Intent(context, DisableKeyguardActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     /**
@@ -110,4 +129,5 @@ public class Util {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SP_NAME_LOCKSCREEN, Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean(SP_KEY_LOCKSCREEN, status).apply();
     }
+
 }

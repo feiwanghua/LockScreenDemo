@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.albert.lockscreendemo.lockscreen.activity.DisableKeyguardActivity;
 import com.albert.lockscreendemo.lockscreen.service.LockScreenService;
 import com.albert.lockscreendemo.lockscreen.utils.BatteryUtil;
+import com.albert.lockscreendemo.lockscreen.utils.Util;
 import com.albert.lockscreendemo.lockscreen.view.LockViewHelper;
 
 /**
@@ -20,9 +22,11 @@ public class LockScreenReceiver extends BroadcastReceiver {
             case Intent.ACTION_SCREEN_OFF:
                 Log.v("albert", "ACTION_SCREEN_OFF");
                 LockViewHelper.showWindow(context);
+                Util.disableKeyguard(context);
                 break;
             case Intent.ACTION_SCREEN_ON:
                 Log.v("albert", "ACTION_SCREEN_ON");
+                sendBroadcastToFinishActivity(context);
                 break;
             case Intent.ACTION_POWER_CONNECTED:
                 Log.v("albert", "ACTION_POWER_CONNECTED");
@@ -53,5 +57,14 @@ public class LockScreenReceiver extends BroadcastReceiver {
                 LockViewHelper.hideWindow(context);
                 break;
         }
+    }
+
+    /*
+    * send Broadcast To Finish DisableKeyguardActivity
+    * */
+    public void sendBroadcastToFinishActivity(Context context){
+        Intent intent=new Intent();
+        intent.setAction(DisableKeyguardActivity.class.getName());
+        context.sendBroadcast(intent);
     }
 }

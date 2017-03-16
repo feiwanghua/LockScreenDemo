@@ -39,11 +39,13 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M||Settings.canDrawOverlays(this)) {
             findViewById(R.id.open_lock_screen).setEnabled(true);
         }
+        if(Util.isLockScreenOn(getApplicationContext())){
+            startService(new Intent(MainActivity.this, LockScreenService.class));
+        }
         ((Switch) findViewById(R.id.open_lock_screen)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    Util.disableKeyguard(getApplicationContext());
                     startService(new Intent(MainActivity.this, LockScreenService.class));
                     Toast.makeText(getApplicationContext(), "startService", Toast.LENGTH_SHORT);
                     Util.setLockScreenStatus(getApplicationContext(),true);

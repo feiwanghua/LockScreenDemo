@@ -1,20 +1,24 @@
 package com.albert.lockscreendemo.lockscreen.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.view.View;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Created by feiwh on 2017/3/13.
  */
 
 public class Util {
-    /*
+    /**
      * 判断是否有锁
      * */
     public static boolean isSecure(Context context){
@@ -35,9 +39,9 @@ public class Util {
         }
     }
 
-    /*
-    * 引导解锁
-    * */
+    /**
+     * 引导解锁
+     * */
     public static void disableKeyguard(Context context){
         if(isSecure(context)) {
             //只能禁用滑动锁
@@ -65,4 +69,30 @@ public class Util {
             decorView.setSystemUiVisibility(uiOptions);
         }
     }
+
+    public static void requestPermission(Activity activity,int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                !Settings.canDrawOverlays(activity)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + activity.getPackageName()));
+            activity.startActivityForResult(intent,requestCode);
+        }
+    }
+
+    public static boolean isServiceWork(Context context, String serviceName) {
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> list = activityManager.getRunningServices(40);
+        if (list.size() <= 0) {
+            return false;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            String name = list.get(i).service.getClassName().toString();
+            if (name.equals(serviceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

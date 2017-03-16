@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 import com.albert.lockscreendemo.R;
 import com.albert.lockscreendemo.lockscreen.fragment.LockFragment;
+import com.albert.lockscreendemo.lockscreen.utils.Util;
 
 /**
  * Created by feiwh on 2017/3/9.
@@ -27,6 +28,7 @@ public class LockScreenActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.lock_container,new LockFragment())
                 .commit();
+        Util.hideMenu(this);
     }
 
     @Override

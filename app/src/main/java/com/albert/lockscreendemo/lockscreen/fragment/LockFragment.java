@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.albert.lockscreendemo.R;
-import com.albert.lockscreendemo.lockscreen.receiver.LockScreenReceiver;
 
 /**
  * Created by feiwh on 2017/3/13.
@@ -23,7 +22,7 @@ public class LockFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_lock_screen,container,false);
+        return inflater.inflate(R.layout.window_lock_screen,container,false);
     }
 
     @Override
@@ -33,11 +32,11 @@ public class LockFragment extends Fragment {
     }
 
     private void initView(){
-        LockScreenReceiver.isLocked = true;
-        getActivity().findViewById(R.id.iv_key).setOnClickListener(new View.OnClickListener() {
+        //LockScreenReceiver.isLocked = true;
+        getActivity().findViewById(R.id.unLock).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LockScreenReceiver.isLocked = false;
+          //      LockScreenReceiver.isLocked = false;
                 getActivity().finish();
                 Toast.makeText(getActivity(), "Screen is unlocked", Toast.LENGTH_SHORT).show();
             }

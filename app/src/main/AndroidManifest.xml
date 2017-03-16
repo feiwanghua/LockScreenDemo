@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.albert.lockscreendemo" >
+    package="com.albert.lockscreendemo">
+
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true">
-        <activity android:name="com.albert.lockscreendemo.MainActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name="com.albert.lockscreendemo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <service android:name="com.albert.lockscreendemo.lockscreen.service.LockScreenService"></service>
-        <activity
+        <receiver
+            android:name="com.albert.lockscreendemo.lockscreen.receiver.BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!--<activity
             android:name="com.albert.lockscreendemo.lockscreen.activity.LauncherActivity"
             android:launchMode="singleTop"
             android:excludeFromRecents="true"
@@ -28,20 +40,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.albert.lockscreendemo.lockscreen.activity.LockScreenActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:excludeFromRecents="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.lockscreen" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <service android:name="com.albert.lockscreendemo.lockscreen.notification.NotificationMonitor"
+        </activity>-->
+        <!--  <activity
+              android:name="com.albert.lockscreendemo.lockscreen.activity.LockScreenActivity"
+              android:launchMode="singleTop"
+              android:screenOrientation="portrait"
+              android:excludeFromRecents="true"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+              <intent-filter>
+                  <action android:name="android.intent.action.VIEW" />
+                  <action android:name="android.intent.lockscreen" />
+                  <category android:name="android.intent.category.DEFAULT" />
+              </intent-filter>
+          </activity>-->
+        <service
+            android:name="com.albert.lockscreendemo.lockscreen.notification.NotificationMonitor"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />

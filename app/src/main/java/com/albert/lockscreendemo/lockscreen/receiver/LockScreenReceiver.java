@@ -3,28 +3,49 @@ package com.albert.lockscreendemo.lockscreen.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-
-import com.albert.lockscreendemo.lockscreen.activity.LockScreenActivity;
+import android.util.Log;
+import com.albert.lockscreendemo.lockscreen.utils.BatteryUtil;
+import com.albert.lockscreendemo.lockscreen.view.LockViewHelper;
 
 /**
  * Created by feiwh on 2017/3/9.
  */
 
 public class LockScreenReceiver extends BroadcastReceiver {
-    public static boolean isLocked = false;
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            isLocked = false;
-            Intent lockIntent = new Intent(context,LockScreenActivity.class);
-            lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(lockIntent);
-            Toast.makeText(context, "ACTION_SCREEN_OFF", Toast.LENGTH_SHORT).show();
-        } else if(intent.getAction().equals(Intent.ACTION_POWER_CONNECTED)){
-            Toast.makeText(context, "ACTION_POWER_CONNECTED", Toast.LENGTH_SHORT).show();
-        }else if(intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED)){
-            Toast.makeText(context, "ACTION_POWER_DISCONNECTED", Toast.LENGTH_SHORT).show();
+        switch (intent.getAction()){
+            case Intent.ACTION_SCREEN_OFF:
+                Log.v("albert", "ACTION_SCREEN_OFF");
+                LockViewHelper.showWindow(context);
+                break;
+            case Intent.ACTION_SCREEN_ON:
+                Log.v("albert", "ACTION_SCREEN_ON");
+                break;
+            case Intent.ACTION_POWER_CONNECTED:
+                Log.v("albert", "ACTION_POWER_CONNECTED");
+                LockViewHelper.showWindow(context);
+                break;
+            case Intent.ACTION_POWER_DISCONNECTED:
+                Log.v("albert", "ACTION_POWER_DISCONNECTED");
+                LockViewHelper.showWindow(context);
+                break;
+            case Intent.ACTION_BATTERY_CHANGED:
+                Log.v("albert", "ACTION_BATTERY_CHANGED");
+                int level = intent.getIntExtra("level", 0);
+                int scale = intent.getIntExtra("scale", 100);
+                BatteryUtil.setBatteryLevel(level, scale);
+                LockViewHelper.batteryChanged(context);
+                break;
+            case Intent.ACTION_BATTERY_OKAY:
+                Log.v("albert", "ACTION_BATTERY_OKAY");
+                break;
+            case Intent.ACTION_TIME_CHANGED:
+            case Intent.ACTION_TIME_TICK:
+            case Intent.ACTION_TIMEZONE_CHANGED:
+                Log.v("albert", "ACTION_TIME_CHANGED");
+                LockViewHelper.updateTimeAndDate(context);
+                break;
         }
     }
 }

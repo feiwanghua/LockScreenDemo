@@ -9,9 +9,9 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
-import com.albert.lockscreendemo.lockscreen.receiver.LockScreenReceiver;
 
 import java.util.List;
+
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
 
 /**
@@ -24,20 +24,21 @@ public class LauncherActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("albert","LauncherActivity onCreate");
+        Log.v("albert", "LauncherActivity onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getLauncherPackageName(this);
-        if (!LockScreenReceiver.isLocked&&isEffective(mPackageName) && isEffective(mClassName)) {
+        if (isEffective(mPackageName) && isEffective(mClassName)) {
             Intent systemIntent = new Intent();
             systemIntent.setComponent(new ComponentName(mPackageName, mClassName));
             startActivity(systemIntent);
-        }else{
-            Intent lockIntent = new Intent(getApplicationContext(),LockScreenActivity.class);
-            lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(lockIntent);
-        }
+        }/*else{*/
+        //LockScreenView.getInstance(getApplicationContext()).showWindow();
+//            Intent lockIntent = new Intent(getApplicationContext(),LockScreenActivity.class);
+//            lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(lockIntent);
+//        }
         finish();
     }
 
@@ -65,17 +66,5 @@ public class LauncherActivity extends Activity {
             return false;
         else
             return true;
-    }
-
-    @Override
-    protected void onResume() {
-        Log.v("albert","LauncherActivity onResume");
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.v("albert","LauncherActivity onPause");
-        super.onPause();
     }
 }

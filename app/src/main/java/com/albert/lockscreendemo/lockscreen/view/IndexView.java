@@ -1,6 +1,7 @@
 package com.albert.lockscreendemo.lockscreen.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,13 +15,15 @@ import com.albert.lockscreendemo.R;
 
 class IndexView {
     private static IndexView mIndexView;
+    private Context mContext;
     private View mRootView;
     private Button mUnLock;
     private TextView mDateTime;
     private TextView mBatteryLevel;
 
     private IndexView(Context context) {
-        initView(context);
+        mContext = context;
+        initView();
     }
 
     public static IndexView getInstance(Context context) {
@@ -38,13 +41,13 @@ class IndexView {
         return mRootView;
     }
 
-    private void initView(final Context context) {
-        mRootView = LayoutInflater.from(context).inflate(R.layout.page_index, null);
+    private void initView() {
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.page_index, null);
         mUnLock = (Button) mRootView.findViewById(R.id.unLock);
         mUnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LockView.getInstance(context).hideWindow();
+                LockView.getInstance(mContext).hideWindow();
             }
         });
         mDateTime = (TextView) mRootView.findViewById(R.id.date_time);
@@ -57,5 +60,15 @@ class IndexView {
 
     public void setBatteryLevel(int batteryLevel){
         mBatteryLevel.setText(batteryLevel+"%");
+    }
+
+    public void switchViewMode(String status){
+        if(status.equals(Intent.ACTION_POWER_CONNECTED)){
+            mBatteryLevel.setVisibility(View.VISIBLE);
+            mUnLock.setText("充电解锁");
+        }else if(status.equals(Intent.ACTION_POWER_DISCONNECTED)){
+            mBatteryLevel.setVisibility(View.INVISIBLE);
+            mUnLock.setText("解锁");
+        }
     }
 }

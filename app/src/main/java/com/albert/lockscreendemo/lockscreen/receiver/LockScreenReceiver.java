@@ -30,18 +30,19 @@ public class LockScreenReceiver extends BroadcastReceiver {
                 break;
             case Intent.ACTION_POWER_CONNECTED:
                 Log.v("albert", "ACTION_POWER_CONNECTED");
+                LockView.getInstance(context).switchViewMode(Intent.ACTION_POWER_CONNECTED);
                 LockView.getInstance(context).showWindow();
                 break;
             case Intent.ACTION_POWER_DISCONNECTED:
                 Log.v("albert", "ACTION_POWER_DISCONNECTED");
-                LockView.getInstance(context).showWindow();
+                LockView.getInstance(context).switchViewMode(Intent.ACTION_POWER_DISCONNECTED);
                 break;
             case Intent.ACTION_BATTERY_CHANGED:
                 Log.v("albert", "ACTION_BATTERY_CHANGED");
                 int level = intent.getIntExtra("level", 0);
                 int scale = intent.getIntExtra("scale", 100);
                 BatteryUtil.setBatteryLevel(level, scale);
-                LockView.getInstance(context).batteryChanged(context);
+                LockView.getInstance(context).batteryChanged();
                 break;
             case Intent.ACTION_BATTERY_OKAY:
                 Log.v("albert", "ACTION_BATTERY_OKAY");
@@ -50,7 +51,7 @@ public class LockScreenReceiver extends BroadcastReceiver {
             case Intent.ACTION_TIME_TICK:
             case Intent.ACTION_TIMEZONE_CHANGED:
                 Log.v("albert", "ACTION_TIME_CHANGED|ACTION_TIME_TICK|ACTION_TIMEZONE_CHANGED");
-                LockView.getInstance(context).updateTimeAndDate(context);
+                LockView.getInstance(context).updateTimeAndDate();
                 break;
             case LockScreenService.ALARM_ALERT_ACTION:
                 Log.v("albert", "ALARM_ALERT_ACTION");
@@ -62,8 +63,8 @@ public class LockScreenReceiver extends BroadcastReceiver {
     /*
     * send Broadcast To Finish DisableKeyguardActivity
     * */
-    public void sendBroadcastToFinishActivity(Context context){
-        Intent intent=new Intent();
+    public void sendBroadcastToFinishActivity(Context context) {
+        Intent intent = new Intent();
         intent.setAction(DisableKeyguardActivity.class.getName());
         context.sendBroadcast(intent);
     }

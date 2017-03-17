@@ -22,6 +22,7 @@ import java.util.List;
 
 public class LockView {
     private static LockView mLockView;
+    private Context mContext;
     private View mRootView;
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
@@ -29,8 +30,9 @@ public class LockView {
     private WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
     private List<View> mViewList = new ArrayList<>();
     private LockView(Context context) {
+        mContext = context;
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        initView(context);
+        initView();
         initParams();
     }
 
@@ -64,11 +66,11 @@ public class LockView {
         mParams.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
     }
 
-    private void initView(final Context context){
-        mRootView = LayoutInflater.from(context).inflate(R.layout.window_lock_view, null);
+    private void initView(){
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.window_lock_view, null);
         mViewPager = (ViewPager) mRootView.findViewById(R.id.lock_view_viewpager);
-        mViewList.add(IndexView.getInstance(context).getRootView());
-        mViewList.add(ConstellationView.getInstance(context).getRootView());
+        mViewList.add(IndexView.getInstance(mContext).getRootView());
+        mViewList.add(ConstellationView.getInstance(mContext).getRootView());
         mPagerAdapter = new PagerAdapter() {
 
             @Override
@@ -93,20 +95,25 @@ public class LockView {
             }
         };
         mViewPager.setAdapter(mPagerAdapter);
-        updateTimeAndDate(context);
-        batteryChanged(context);
+        initDataSet();
     }
 
-    public void updateTimeAndDate(Context context) {
+    public void initDataSet(){
+        updateTimeAndDate();
+        batteryChanged();
+    }
+
+    public void updateTimeAndDate() {
         Time time = new Time();
         time.setToNow();
-        IndexView.getInstance(context).setDateTime(time.year + "/" + (time.month + 1) + "/" + time.monthDay + " " + time.hour + ":" + time.minute);
+        IndexView.getInstance(mContext).setDateTime(time.year + "/" + (time.month + 1) + "/" + time.monthDay + " " + time.hour + ":" + time.minute);
     }
 
-    public void batteryChanged(Context context) {
-        if(BatteryUtil.isCharging(context)) {
-            IndexView.getInstance(context).setBatteryLevel(BatteryUtil.getBatteryLevel());
-        }
+    public void batteryChanged() {
+        IndexView.getInstance(mContext).setBatteryLevel(BatteryUtil.getBatteryLevel());
     }
 
+    public void switchViewMode(String status){
+        IndexView.getInstance(mContext).switchViewMode(status);
+    }
 }

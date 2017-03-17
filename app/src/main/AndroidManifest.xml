@@ -47,7 +47,8 @@
             </intent-filter>
         </service>
         <activity android:name="com.albert.lockscreendemo.lockscreen.activity.DisableKeyguardActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true">
         </activity>
     </application>
 

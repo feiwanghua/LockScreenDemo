@@ -29,6 +29,7 @@ public class LockView {
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
     private List<View> mViewList = new ArrayList<>();
+
     private LockView(Context context) {
         mContext = context;
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -36,7 +37,7 @@ public class LockView {
         initParams();
     }
 
-    public static LockView getInstance(Context context){
+    public static LockView getInstance(Context context) {
         synchronized (IndexView.class) {
             if (mLockView == null) {
                 synchronized (IndexView.class) {
@@ -66,7 +67,7 @@ public class LockView {
         mParams.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
     }
 
-    private void initView(){
+    private void initView() {
         mRootView = LayoutInflater.from(mContext).inflate(R.layout.window_lock_view, null);
         mViewPager = (ViewPager) mRootView.findViewById(R.id.lock_view_viewpager);
         mViewList.add(IndexView.getInstance(mContext).getRootView());
@@ -98,7 +99,7 @@ public class LockView {
         initDataSet();
     }
 
-    public void initDataSet(){
+    public void initDataSet() {
         updateTimeAndDate();
         batteryChanged();
     }
@@ -113,7 +114,7 @@ public class LockView {
         IndexView.getInstance(mContext).setBatteryLevel(BatteryUtil.getBatteryLevel());
     }
 
-    public void switchViewMode(String status){
+    public void switchViewMode(String status) {
         IndexView.getInstance(mContext).switchViewMode(status);
     }
 }

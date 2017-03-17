@@ -6,6 +6,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -102,6 +103,12 @@ public class Util {
                     Uri.parse("package:" + activity.getPackageName()));
             activity.startActivityForResult(intent, requestCode);
         }
+    }
+
+    public static boolean havePermissionAutoRun(Context context){
+        PackageManager packageManager = context.getPackageManager();
+        return PackageManager.PERMISSION_GRANTED ==
+                packageManager.checkPermission("...", context.getPackageName());
     }
 
     public static boolean isServiceWork(Context context, String serviceName) {

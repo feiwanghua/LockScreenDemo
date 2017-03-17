@@ -16,15 +16,13 @@ import com.albert.lockscreendemo.lockscreen.view.LockView;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v("albert", "BootReceiver");
-        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            Log.v("albert","ACTION_BOOT_COMPLETED");
-            if(Util.isLockScreenOn(context)){
+        Log.v("albert", "BootReceiver:" + intent.getAction());
+        if (Util.isLockScreenOn(context)) {
+            if (!Util.isServiceWork(context, LockScreenService.class.getName())) {
                 LockView.getInstance(context).showWindow();
                 Util.disableKeyguard(context);
-            }
-            if (!Util.isServiceWork(context, LockScreenService.class.getName())) {
                 context.startService(new Intent(context, LockScreenService.class));
+                Log.v("albert", "startService LockScreenService");
             }
         }
     }

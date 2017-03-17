@@ -3,7 +3,6 @@ package com.albert.lockscreendemo.lockscreen.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -14,8 +13,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.albert.lockscreendemo.lockscreen.receiver.LockScreenReceiver;
-import com.albert.lockscreendemo.lockscreen.utils.Util;
-import com.albert.lockscreendemo.lockscreen.view.LockViewHelper;
+import com.albert.lockscreendemo.lockscreen.view.LockView;
 
 /**
  * Created by feiwh on 2017/3/9.
@@ -108,7 +106,7 @@ public class LockScreenService extends Service {
                                 break;
                             case TelephonyManager.CALL_STATE_RINGING:
                                 Log.v("albert","CALL_STATE_RINGING");
-                                LockViewHelper.hideWindow(getApplicationContext());
+                                LockView.getInstance(getApplicationContext()).hideWindow();
                                 break;
                         }
                     }

@@ -32,29 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
-        <!--<activity
-            android:name="com.albert.lockscreendemo.lockscreen.activity.LauncherActivity"
-            android:launchMode="singleTop"
-            android:excludeFromRecents="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
-        </activity>-->
-        <!--  <activity
-              android:name="com.albert.lockscreendemo.lockscreen.activity.LockScreenActivity"
-              android:launchMode="singleTop"
-              android:screenOrientation="portrait"
-              android:excludeFromRecents="true"
-              android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
-              <intent-filter>
-                  <action android:name="android.intent.action.VIEW" />
-                  <action android:name="android.intent.lockscreen" />
-                  <category android:name="android.intent.category.DEFAULT" />
-              </intent-filter>
-          </activity>-->
         <service
             android:name="com.albert.lockscreendemo.lockscreen.notification.NotificationMonitor"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

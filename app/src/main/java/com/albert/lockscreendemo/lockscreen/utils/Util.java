@@ -97,12 +97,7 @@ public class Util {
     }
 
     public static void requestPermission(Activity activity, int requestCode) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                !Settings.canDrawOverlays(activity)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivityForResult(intent, requestCode);
-        }
+
     }
 
     public static boolean havePermissionAutoRun(Context context){

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -25,7 +24,6 @@ public class LockScreenService extends Service {
     // A public action send by AlarmService when the alarm has started.
     public static final String ALARM_ALERT_ACTION = "com.android.deskclock.ALARM_ALERT";
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -83,7 +81,6 @@ public class LockScreenService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
 
-        @Nullable
         @Override
         public IBinder onBind(Intent intent) {
             return null;

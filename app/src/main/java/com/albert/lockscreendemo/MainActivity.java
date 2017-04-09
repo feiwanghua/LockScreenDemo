@@ -25,20 +25,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (Settings.canDrawOverlays(this)) {
-                    findViewById(R.id.open_lock_screen).setEnabled(true);
-                }
-            }
-        }
     }
 
     private void initView() {
         ((Switch) findViewById(R.id.open_lock_screen)).setChecked(Util.isLockScreenOn(getApplicationContext()));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M||Settings.canDrawOverlays(this)) {
-            findViewById(R.id.open_lock_screen).setEnabled(true);
-        }
+
+        findViewById(R.id.open_lock_screen).setEnabled(true);
+
         if(Util.isLockScreenOn(getApplicationContext())){
             startService(new Intent(MainActivity.this, LockScreenService.class));
         }
